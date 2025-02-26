@@ -1,18 +1,18 @@
 const apikey = "23152d87dd07ae20287cba9d74fb9604";
 const apiURL = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
 let weathericon = document.getElementById("weather-icon");
-// const searchbox = document.querySelector(".search input");
-// const searchbtn = document.querySelector(".search button")
+const searchbox = document.querySelector(".search input");
+const searchbtn = document.querySelector(".search button")
 // let inputval = parseFloat(document.getElementById("search_box").value);
 // let num_value = Number(inputval);
 async function checkWeather(city){
-    try {
-        const response = await fetch(apiURL + city + `&appid=${apikey}`);
-        if (!response.ok) {
-            throw new Error("Network response was not ok");
-        }
-        var data = await response.json();
-        console.log(data);
+    const response = await fetch(apiURL + city + `&appid=${apikey}`);
+    var data = await response.json();
+    console.log(data);
+
+    document.querySelector(".city").innerHTML = data.name;
+    document.querySelector(".temp").innerHTML = Math.round(data.main.temp) + "°C";
+    document.querySelector(".humidity").innerHTML = Math.round(data.main.humidity) + "%";
 
         let cityElement = document.querySelector(".city");
         let tempElement = document.querySelector(".temp");
@@ -48,11 +48,13 @@ async function checkWeather(city){
         else if(data.weather[0].main == "Smoke" && weathericon){
             weathericon.src = "images/smoke.png";
         }
-    } catch (error) {
-        console.error("Fetch error: ", error);
-    }
-}
+    } 
+    
+searchbtn.addEventListener("click", function(){
+    checkWeather(searchbox.value);
+    searchbox.value = "";
+});
 
-checkWeather("Rishikesh");
+
 
 
